@@ -99,6 +99,7 @@ setInterval(function () {
 setInterval(function () {
   for (var i = 0; i < avatars.length; i++) {
     if (avatars[i].eat === true) {
+      console.log(avatars[i].eat)
       var index = 0
       var check = 0
       // *chekeat food
