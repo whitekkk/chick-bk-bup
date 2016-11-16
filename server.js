@@ -98,40 +98,42 @@ setInterval(function () {
 
 setInterval(function () {
   for (var i = 0; i < avatars.length; i++) {
-    var index = 0
-    var check = 0
-    // *chekeat food
-    var eatFood = 0
-    eatFood = foods.find(food => {
-      index++
-      check = ((food.x < avatars[i].x + 50) && (food.x > avatars[i].x - 50)) && ((food.y < avatars[i].y + 50) && (food.y > avatars[i].y - 50))
-      return (check)
-    })
-    foods.splice(index, 0)
-    if (eatFood !== undefined) {
-      firebase.database().ref('foods/' + eatFood.id).remove()
-      if (eatFood.color !== '') {
-        if (avatars[i].score < 5) {
-          avatars[i].score = -2
+    if (avatars[i].eat === true) {
+      var index = 0
+      var check = 0
+      // *chekeat food
+      var eatFood = 0
+      eatFood = foods.find(food => {
+        index++
+        check = ((food.x < avatars[i].x + 50) && (food.x > avatars[i].x - 50)) && ((food.y < avatars[i].y + 50) && (food.y > avatars[i].y - 50))
+        return (check)
+      })
+      foods.splice(index, 0)
+      if (eatFood !== undefined) {
+        firebase.database().ref('foods/' + eatFood.id).remove()
+        if (eatFood.color !== '') {
+          if (avatars[i].score < 5) {
+            avatars[i].score = -2
+          }
+          avatars[i].score = Math.ceil(avatars[i].score / 2)
+          avatars[i].color = eatFood.color
+        } else {
+          avatars[i].score += 2
         }
-        avatars[i].score = Math.ceil(avatars[i].score / 2)
-        avatars[i].color = eatFood.color
-      } else {
-        avatars[i].score += 2
-      }
 
-      // if (avatars.color === '#F5FF5D') {
-      //   target = '#AEFBE9'
-      // } else if (avatars.color === '#AEFBE9') {
-      //   target = '#FC665A'
-      // } else {
-      //   target = '#F5FF5D'
-      // }
-      if (avatars[i].id !== '') {
-        firebase.database().ref('avatars/' + avatars[i].id).update({
-          color: avatars[i].color,
-          score: avatars[i].score
-        })
+        // if (avatars.color === '#F5FF5D') {
+        //   target = '#AEFBE9'
+        // } else if (avatars.color === '#AEFBE9') {
+        //   target = '#FC665A'
+        // } else {
+        //   target = '#F5FF5D'
+        // }
+        if (avatars[i].id !== '') {
+          firebase.database().ref('avatars/' + avatars[i].id).update({
+            color: avatars[i].color,
+            score: avatars[i].score
+          })
+        }
       }
     }
   }
