@@ -131,8 +131,7 @@ setInterval(function () {
   }
 }, 10)
 
-app.set('views', __dirname + '/views')
-app.engine('html', require('ejs').renderFile)
+app.set('view engine', 'ejs')
 
 app.get('/', function (req, res) {
   res.render('index.html')
