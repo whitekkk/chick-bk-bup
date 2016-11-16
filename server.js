@@ -131,10 +131,8 @@ setInterval(function () {
   }
 }, 10)
 
-app.set('view engine', 'ejs')
-
 app.get('/', function (req, res) {
-  res.render('index.html')
+  res.send('<meta http-equiv="refresh" content="1800">')
 })
 
 app.listen(app.get('port'), function () {
