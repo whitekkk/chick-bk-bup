@@ -120,14 +120,6 @@ setInterval(function () {
         } else {
           avatars[i].score += 2
         }
-
-        // if (avatars.color === '#F5FF5D') {
-        //   target = '#AEFBE9'
-        // } else if (avatars.color === '#AEFBE9') {
-        //   target = '#FC665A'
-        // } else {
-        //   target = '#F5FF5D'
-        // }
         if (avatars[i].id !== '') {
           firebase.database().ref('avatars/' + avatars[i].id).update({
             color: avatars[i].color,
@@ -138,6 +130,10 @@ setInterval(function () {
     }
   }
 }, 10)
+
+app.get('/', function (req, res) {
+  res.render('index.html')
+})
 
 app.listen(app.get('port'), function () {
   console.log('run at port', app.get('port'))
