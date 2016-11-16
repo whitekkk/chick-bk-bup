@@ -13,6 +13,7 @@ var config = {
 
 firebase.initializeApp(config)
 var Foods = firebase.database().ref('foods')
+var Avatars = firebase.database().ref('avatars')
 
 app.use(bodyParser.json())
 
@@ -21,6 +22,7 @@ app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json())
 
 var foods = []
+var avatars = []
 
 Foods.on('child_added', function (snapshot) {
   var item = snapshot.val()
@@ -39,6 +41,29 @@ Foods.on('child_changed', function (snapshot) {
 Foods.on('child_removed', function (snapshot) {
   var id = snapshot.key
   foods.splice(foods.findIndex(food => food.id === id), 1)
+})
+
+Avatars.on('child_added', function (snapshot) {
+  var item = snapshot.val()
+  item.id = snapshot.key
+  avatars.push(item)
+})
+Avatars.on('child_changed', function (snapshot) {
+  var id = snapshot.key
+  var avatar = avatars.find(avatar => avatar.id === id)
+  avatar.x = snapshot.val().x
+  avatar.y = snapshot.val().y
+  avatar.color = snapshot.val().color
+  avatar.face = snapshot.val().face
+  avatar.speed = snapshot.val().speed
+  avatar.eat = snapshot.val().eat
+  avatar.score = snapshot.val().score
+  // change
+})
+Avatars.on('child_removed', function (snapshot) {
+  var id = snapshot.key
+  avatars.splice(avatars.findIndex(avatar => avatar.id === id), 1)
+  // vm.checkName = true ***`แก้ซะ`
 })
 
 var newFood
@@ -70,6 +95,47 @@ setInterval(function () {
   }
   length = foods.length
 }, 10000)
+
+setInterval(function () {
+  for (var i = 0; i < avatars.length; i++) {
+    var index = 0
+    var check = 0
+    // *chekeat food
+    var eatFood = 0
+    eatFood = foods.find(food => {
+      index++
+      check = ((food.x < avatars[i].x + 50) && (food.x > avatars[i].x - 50)) && ((food.y < avatars[i].y + 50) && (food.y > avatars[i].y - 50))
+      return (check)
+    })
+    foods.splice(index, 0)
+    if (eatFood !== undefined) {
+      firebase.database().ref('foods/' + eatFood.id).remove()
+      if (eatFood.color !== '') {
+        if (avatars[i].score < 5) {
+          avatars[i].score = -2
+        }
+        avatars[i].score = Math.ceil(avatars[i].score / 2)
+        avatars[i].color = eatFood.color
+      } else {
+        avatars[i].score += 2
+      }
+
+      // if (avatars.color === '#F5FF5D') {
+      //   target = '#AEFBE9'
+      // } else if (avatars.color === '#AEFBE9') {
+      //   target = '#FC665A'
+      // } else {
+      //   target = '#F5FF5D'
+      // }
+      if (avatars[i].id !== '') {
+        firebase.database().ref('avatars/' + avatars[i].id).update({
+          color: avatars[i].color,
+          score: avatars[i].score
+        })
+      }
+    }
+  }
+}, 10)
 
 app.listen(app.get('port'), function () {
   console.log('run at port', app.get('port'))
