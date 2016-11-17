@@ -94,7 +94,7 @@ setInterval(function () {
     Foods.push(newFood)
   }
   length = foods.length
-}, 10000)
+}, 2000)
 
 setInterval(function () {
   for (var i = 0; i < avatars.length; i++) {
