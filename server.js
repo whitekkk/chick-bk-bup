@@ -109,14 +109,15 @@ setInterval(function () {
         return (check)
       })
       if (eatFood !== undefined) {
-        firebase.database().ref('foods/' + eatFood.id).remove()
         if (eatFood.color !== '' && avatars[i].score > 5) {
           avatars[i].score = Math.ceil(avatars[i].score / 2)
           avatars[i].color = eatFood.color
+          firebase.database().ref('foods/' + eatFood.id).remove()
         } else if (eatFood.color !== '' && avatars[i].score < 5) {
 
         } else {
           avatars[i].score += 2
+          firebase.database().ref('foods/' + eatFood.id).remove()
         }
         if (avatars[i].id !== '') {
           firebase.database().ref('avatars/' + avatars[i].id).update({
