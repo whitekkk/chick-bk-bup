@@ -112,9 +112,9 @@ setInterval(function () {
       if (eatFood !== undefined) {
         firebase.database().ref('foods/' + eatFood.id).remove()
         if (eatFood.color !== '') {
-          if (avatars[i].score < 5) {
-            avatars[i].score = -2
-          }
+          // if (avatars[i].score < 5) {
+          //   avatars[i].score = -2
+          // }
           avatars[i].score = Math.ceil(avatars[i].score / 2)
           avatars[i].color = eatFood.color
         } else {
