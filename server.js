@@ -108,24 +108,26 @@ setInterval(function () {
         check = ((food.x < avatars[i].x + 50) && (food.x > avatars[i].x - 50)) && ((food.y < avatars[i].y + 50) && (food.y > avatars[i].y - 50))
         return (check)
       })
-      if (eatFood !== undefined && avatars[i].score > 5) {
+      if (eatFood !== undefined) {
         firebase.database().ref('foods/' + eatFood.id).remove()
-        if (eatFood.color !== '') {
+        if (eatFood.color !== '' && avatars[i].score > 5) {
           // if (avatars[i].score < 5) {
           //   avatars[i].score = -2
           // }
           avatars[i].score = Math.ceil(avatars[i].score / 2)
           avatars[i].color = eatFood.color
+        } else if (eatFood.color !== '' && avatars[i].score < 5) {
+
         } else {
           avatars[i].score += 2
         }
+        foods.splice(index, 0)
         if (avatars[i].id !== '') {
           firebase.database().ref('avatars/' + avatars[i].id).update({
             color: avatars[i].color,
             score: avatars[i].score
           })
         }
-        foods.splice(index, 0)
       }
     }
   }
