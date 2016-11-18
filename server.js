@@ -108,7 +108,7 @@ setInterval(function () {
         check = ((food.x < avatars[i].x + 50) && (food.x > avatars[i].x - 50)) && ((food.y < avatars[i].y + 50) && (food.y > avatars[i].y - 50))
         return (check)
       })
-      if (eatFood !== undefined && avatars[i].score < 5) {
+      if (eatFood !== undefined && avatars[i].score > 5) {
         firebase.database().ref('foods/' + eatFood.id).remove()
         if (eatFood.color !== '') {
           // if (avatars[i].score < 5) {
