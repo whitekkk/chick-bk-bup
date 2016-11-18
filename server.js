@@ -116,12 +116,13 @@ setInterval(function () {
           // }
           avatars[i].score = Math.ceil(avatars[i].score / 2)
           avatars[i].color = eatFood.color
+          foods.splice(index, 0)
         } else if (eatFood.color !== '' && avatars[i].score < 5) {
 
         } else {
           avatars[i].score += 2
+          foods.splice(index, 0)
         }
-        foods.splice(index, 0)
         if (avatars[i].id !== '') {
           firebase.database().ref('avatars/' + avatars[i].id).update({
             color: avatars[i].color,
