@@ -109,7 +109,7 @@ setInterval(function () {
         return (check)
       })
       foods.splice(index, 0)
-      if (eatFood !== undefined) {
+      if (eatFood !== undefined && avatars[i].score < 5) {
         firebase.database().ref('foods/' + eatFood.id).remove()
         if (eatFood.color !== '') {
           // if (avatars[i].score < 5) {
